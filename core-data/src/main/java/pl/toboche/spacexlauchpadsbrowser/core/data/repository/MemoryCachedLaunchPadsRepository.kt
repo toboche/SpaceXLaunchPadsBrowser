@@ -7,9 +7,10 @@ import pl.toboche.spacexlauchpadsbrowser.core.data.mapping.LaunchPadsMapper
 import pl.toboche.spacexlauchpadsbrowser.core.model.LaunchPad
 import pl.toboche.spacexlauchpadsbrowser.core.network.LaunchPadsNetwork
 import pl.toboche.spacexlauchpadsbrowser.core.result.Result
+import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 
-class MemoryCachedLaunchPadsRepository(
+class MemoryCachedLaunchPadsRepository @Inject constructor(
     val launchPadsNetwork: LaunchPadsNetwork,
     val mapper: LaunchPadsMapper
 ) : LaunchPadsRepository {

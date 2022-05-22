@@ -2,8 +2,9 @@ package pl.toboche.spacexlauchpadsbrowser.core.data.mapping
 
 import pl.toboche.spacexlauchpadsbrowser.core.model.LaunchPad
 import pl.toboche.spacexlauchpadsbrowser.core.network.model.LaunchPadEntity
+import javax.inject.Inject
 
-class LaunchPadsMapper {
+class LaunchPadsMapper @Inject constructor() {
     fun map(launchPadEntities: List<LaunchPadEntity>) =
         launchPadEntities.map {
             LaunchPad(

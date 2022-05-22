@@ -5,41 +5,43 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import pl.toboche.core.data.BuildConfig
 import pl.toboche.spacexlauchpadsbrowser.core.network.model.LaunchPadEntity
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Query
+import javax.inject.Inject
 import javax.inject.Singleton
 
-private interface RetrofitNiANetworkApi {
+private interface RetrofitLaunchPadsANetworkApi {
     @GET(value = "/v3/launchpads")
-    suspend fun getTopics(
-        @Query("id") ids: List<String>?,
-    ): NetworkResponse<List<LaunchPadEntity>>
+    suspend fun getTopics(): List<LaunchPadEntity>
 }
 
-@kotlinx.serialization.Serializable
-private data class NetworkResponse<T>(
-    val data: T
-)
-
-private const val NiABaseUrl = BuildConfig.BACKEND_URL
+private const val BaseUrl = BuildConfig.BACKEND_URL
 
 @Singleton
-class LaunchPadsRetrofitNetwork(
+class LaunchPadsRetrofitNetwork @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
     private val networkJson: Json
 
-) {
+) : LaunchPadsNetwork {
     private val networkApi = Retrofit.Builder()
-        .baseUrl(NiABaseUrl)
+        .baseUrl(BaseUrl)
         .client(
             OkHttpClient.Builder()
+                .addNetworkInterceptor(
+                    HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+                )
                 .build()
         )
         .addConverterFactory(networkJson.asConverterFactory("application/json".toMediaType()))
         .build()
-        .create(RetrofitNiANetworkApi::class.java)
+        .create(RetrofitLaunchPadsANetworkApi::class.java)
+
+    override suspend fun getLaunchPads(): List<LaunchPadEntity> {
+        return networkApi.getTopics()
+    }
 
 }

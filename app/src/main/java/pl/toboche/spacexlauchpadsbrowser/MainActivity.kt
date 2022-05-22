@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
 import pl.toboche.feature.splash.SplashScreen
+import pl.toboche.spacexlauchpadsbrowser.ui.MainScreen
 import pl.toboche.spacexlauchpadsbrowser.ui.theme.SpaceXLauchpadsBrowserTheme
 
 @AndroidEntryPoint
@@ -18,11 +19,12 @@ class MainActivity : ComponentActivity() {
             SpaceXLauchpadsBrowserTheme {
                 // A surface container using the 'background' color from the theme
                 Scaffold {
-                    SplashScreen(R.drawable.ic_launcher_foreground)
+                    MainScreen()
                 }
             }
         }
     }
+
 }
 
 @Preview(showBackground = true)
