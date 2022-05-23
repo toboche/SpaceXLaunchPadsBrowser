@@ -8,7 +8,7 @@ import pl.toboche.spacexlauchpadsbrowser.core.model.LaunchPad
 import pl.toboche.spacexlauchpadsbrowser.core.result.Result
 
 class TestLaunchPadsRepository : LaunchPadsRepository {
-    private val launchPadsFlow: MutableSharedFlow<Result<List<LaunchPad>>> =
+    val launchPadsFlow: MutableSharedFlow<Result<List<LaunchPad>>> =
         MutableSharedFlow(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 
     override fun getLaunchPads(): Flow<Result<List<LaunchPad>>> = launchPadsFlow
