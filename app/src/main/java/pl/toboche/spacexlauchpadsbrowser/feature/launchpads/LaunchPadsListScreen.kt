@@ -9,7 +9,7 @@ import pl.toboche.spacexlauchpadsbrowser.MainScreenViewModel
 @Composable
 fun LaunchPadsListScreen(uiState: MainScreenViewModel.MainScreenUiState) {
     Column {
-        Text(text = uiState.name)
+        Text(text = uiState.toString())
 
     }
 }
@@ -17,5 +17,5 @@ fun LaunchPadsListScreen(uiState: MainScreenViewModel.MainScreenUiState) {
 @Preview
 @Composable
 fun Preview() {
-    LaunchPadsListScreen(uiState = MainScreenViewModel.MainScreenUiState.LAUNCH_PADS_MISSING)
+    LaunchPadsListScreen(uiState = MainScreenViewModel.MainScreenUiState.Missing)
 }

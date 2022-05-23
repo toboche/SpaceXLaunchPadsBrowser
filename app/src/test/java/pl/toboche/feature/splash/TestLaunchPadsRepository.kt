@@ -1,15 +1,21 @@
 package pl.toboche.feature.splash
 
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import pl.toboche.spacexlauchpadsbrowser.core.data.repository.LaunchPadsRepository
 import pl.toboche.spacexlauchpadsbrowser.core.model.LaunchPad
 import pl.toboche.spacexlauchpadsbrowser.core.result.Result
 
 class TestLaunchPadsRepository : LaunchPadsRepository {
-    val launchPadsFlow: MutableSharedFlow<Result<List<LaunchPad>>> =
-        MutableSharedFlow(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    val launchPadsFlow: MutableStateFlow<Result<List<LaunchPad>>> =
+        MutableStateFlow(Result.NotStarted)
 
-    override fun getLaunchPads(): Flow<Result<List<LaunchPad>>> = launchPadsFlow
+    var scheduledValue: Result<List<LaunchPad>> = Result.NotStarted
+
+    override suspend fun getLaunchPads() {
+        launchPadsFlow.value = scheduledValue
+    }
+
+    override val launchPads: StateFlow<Result<List<LaunchPad>>>
+        get() = launchPadsFlow
 }

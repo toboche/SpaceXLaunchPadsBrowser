@@ -1,8 +1,8 @@
 package pl.toboche.spacexlauchpadsbrowser.core.data.repository
 
 import android.util.Log
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import pl.toboche.spacexlauchpadsbrowser.core.data.mapping.LaunchPadsMapper
 import pl.toboche.spacexlauchpadsbrowser.core.model.LaunchPad
 import pl.toboche.spacexlauchpadsbrowser.core.network.LaunchPadsNetwork
@@ -15,21 +15,21 @@ class MemoryCachedLaunchPadsRepository @Inject constructor(
     val mapper: LaunchPadsMapper
 ) : LaunchPadsRepository {
 
-    private var launchPads: List<LaunchPad>? = null
+    private val _launchPads = MutableStateFlow<Result<List<LaunchPad>>>(Result.NotStarted)
 
-    override fun getLaunchPads(): Flow<Result<List<LaunchPad>>> {
-        return flow {
-            if (launchPads == null) {
-                emit(Result.Loading)
-                val result = suspendRunCatching { launchPadsNetwork.getLaunchPads() }
-                if (result.isSuccess) {
-                    emit(Result.Success(mapper.map(result.getOrNull()!!)))
-                } else {
-                    emit(Result.Error(result.exceptionOrNull()))
-                }
+    override val launchPads: StateFlow<Result<List<LaunchPad>>> get() = _launchPads
+
+    override suspend fun getLaunchPads() {
+        if (_launchPads.value == Result.NotStarted || _launchPads.value is Result.Error) {
+            _launchPads.value = Result.Loading
+            val result = suspendRunCatching { launchPadsNetwork.getLaunchPads() }
+            if (result.isSuccess) {
+                _launchPads.value = Result.Success(mapper.map(result.getOrNull()!!))
             } else {
-                launchPads
+                _launchPads.value = Result.Error(result.exceptionOrNull())
             }
+        } else {
+            _launchPads
         }
     }
 

@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transform
+import kotlinx.coroutines.launch
 import pl.toboche.spacexlauchpadsbrowser.core.data.repository.LaunchPadsRepository
 import pl.toboche.spacexlauchpadsbrowser.core.result.Result
 import javax.inject.Inject
@@ -14,15 +15,15 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashScreenViewModel
 @Inject constructor(
-    val launchPadsRepository: LaunchPadsRepository
+    launchPadsRepository: LaunchPadsRepository
 ) : ViewModel() {
     val uiState: StateFlow<SplashScreenUiState> =
-        launchPadsRepository.getLaunchPads()
+        launchPadsRepository.launchPads
             .transform {
                 emit(
                     when (it) {
-                        is Result.Loading -> SplashScreenUiState.Loading
-                        is Result.Success -> closeSplashScreen()
+                        is Result.Loading, Result.NotStarted -> SplashScreenUiState.Loading
+                        is Result.Success -> SplashScreenUiState.Finish
                         is Result.Error -> SplashScreenUiState.Error("Error loading", "Retry")
                     }
                 )
@@ -30,13 +31,11 @@ class SplashScreenViewModel
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = SplashScreenUiState.Loading
-            )
-
-    private fun closeSplashScreen(): SplashScreenUiState {
-        //TODO
-        return SplashScreenUiState.Finish
-    }
-
+            ).also {
+                viewModelScope.launch {
+                    launchPadsRepository.getLaunchPads()
+                }
+            }
 
     sealed interface SplashScreenUiState {
         object Loading : SplashScreenUiState

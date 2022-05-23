@@ -37,7 +37,7 @@ class SplashScreenViewModelTest {
     @Test
     fun `when download error show error`() = runTest {
         systemUnderTest.uiState.test {
-            testLaunchPadsRepository.launchPadsFlow.emit(Result.Error())
+            testLaunchPadsRepository.scheduledValue = Result.Error()
             skipItems(1)
             assertEquals(
                 SplashScreenViewModel.SplashScreenUiState.Error(
@@ -63,7 +63,7 @@ class SplashScreenViewModelTest {
     @Test
     fun `when download finished close screen`() = runTest {
         systemUnderTest.uiState.test {
-            testLaunchPadsRepository.launchPadsFlow.emit(Result.Success(emptyList()))
+            testLaunchPadsRepository.scheduledValue = Result.Success(emptyList())
             skipItems(1)
             assertEquals(SplashScreenViewModel.SplashScreenUiState.Finish, awaitItem())
             cancel()
