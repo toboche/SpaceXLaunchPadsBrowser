@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transform
 import pl.toboche.spacexlauchpadsbrowser.core.data.repository.LaunchPadsRepository
-import pl.toboche.spacexlauchpadsbrowser.core.model.LaunchPad
 import pl.toboche.spacexlauchpadsbrowser.core.result.Result
 import pl.toboche.spacexlauchpadsbrowser.core.result.Result.Loading
 import javax.inject.Inject
@@ -20,7 +19,7 @@ class MainScreenViewModel
 ) : ViewModel() {
 
     val uiState: StateFlow<MainScreenUiState> =
-        launchPadsRepository.getLaunchPads().transform<Result<List<LaunchPad>>, MainScreenUiState> {
+        launchPadsRepository.getLaunchPads().transform {
             emit(
                 when (it) {
                     is Loading -> MainScreenUiState.LAUNCH_PADS_MISSING
