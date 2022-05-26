@@ -42,7 +42,6 @@ class MainScreenViewModelTest {
             assertEquals(MainScreenViewModel.MainScreenUiState.Missing, awaitItem())
             cancel()
         }
-        systemUnderTest.uiState
     }
 
     @Test
@@ -53,7 +52,6 @@ class MainScreenViewModelTest {
             assertEquals(MainScreenViewModel.MainScreenUiState.Cached, awaitItem())
             cancel()
         }
-        systemUnderTest.uiState
     }
 
     @Test
@@ -70,6 +68,5 @@ class MainScreenViewModelTest {
             )
             cancel()
         }
-        systemUnderTest.uiState
     }
 }
