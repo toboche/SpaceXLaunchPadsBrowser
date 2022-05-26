@@ -16,3 +16,4 @@ rootProject.name = "SpaceX Lauchpads Browser"
 include ':app'
 include ':feature-splash'
 include ':core-data'
+include ':feature-launch-pads'

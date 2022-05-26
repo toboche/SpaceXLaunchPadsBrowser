@@ -15,7 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import pl.toboche.feature.splash.SplashScreen
 import pl.toboche.spacexlauchpadsbrowser.MainScreenViewModel
 import pl.toboche.spacexlauchpadsbrowser.R
-import pl.toboche.spacexlauchpadsbrowser.feature.launchpads.LaunchPadsListScreen
+import pl.toboche.spacexlauchpadsbrowser.feature.launch_pads.ui.LaunchPadsListScreen
 
 @Composable
 fun MainScreen(
@@ -25,11 +25,12 @@ fun MainScreen(
 
     when (uiState) {
         is MainScreenViewModel.MainScreenUiState.Initial -> CircularProgressIndicator()
-        is MainScreenViewModel.MainScreenUiState.Cached ->
-            LaunchPadsListScreen(uiState)
-        is MainScreenViewModel.MainScreenUiState.Missing ->
-            SplashScreen(R.drawable.ic_launcher_foreground)
-        is MainScreenViewModel.MainScreenUiState.Error -> showErrorDialog(uiState as MainScreenViewModel.MainScreenUiState.Error, viewModel)
+        is MainScreenViewModel.MainScreenUiState.Cached -> LaunchPadsListScreen()
+        is MainScreenViewModel.MainScreenUiState.Missing -> SplashScreen(R.drawable.ic_launcher_foreground)
+        is MainScreenViewModel.MainScreenUiState.Error -> showErrorDialog(
+            uiState as MainScreenViewModel.MainScreenUiState.Error,
+            viewModel
+        )
     }
 }
 
@@ -58,8 +59,9 @@ private fun showErrorDialog(
                 ) {
                     Button(
                         modifier = Modifier.fillMaxWidth(),
-                        onClick = { openDialog.value = false
-                        viewModel.refreshData()
+                        onClick = {
+                            openDialog.value = false
+                            viewModel.refreshData()
                         }
                     ) {
                         Text(uiState.actionText)
