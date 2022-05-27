@@ -12,7 +12,7 @@ class TestLaunchPadsRepository : LaunchPadsRepository {
 
     var scheduledValue: Result<List<LaunchPad>> = Result.NotStarted
 
-    override suspend fun getLaunchPads() {
+    override suspend fun refreshLaunchPads() {
         launchPadsFlow.value = scheduledValue
     }
 

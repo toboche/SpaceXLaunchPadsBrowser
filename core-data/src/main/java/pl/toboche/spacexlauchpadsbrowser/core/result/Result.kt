@@ -1,4 +1,5 @@
 package pl.toboche.spacexlauchpadsbrowser.core.result
+
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map

@@ -17,9 +17,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             SpaceXLauchpadsBrowserTheme {
-                // A surface container using the 'background' color from the theme
-                Scaffold {
-                    MainScreen()
+                Scaffold(
+                ) { padding ->
+                    MainScreen(padding)
                 }
             }
         }

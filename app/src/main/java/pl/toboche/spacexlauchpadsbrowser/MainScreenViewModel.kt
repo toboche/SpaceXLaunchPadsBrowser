@@ -41,7 +41,7 @@ class MainScreenViewModel
 
     fun refreshData() {
         viewModelScope.launch {
-            launchPadsRepository.getLaunchPads()
+            launchPadsRepository.refreshLaunchPads()
         }
     }
 

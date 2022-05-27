@@ -21,7 +21,7 @@ class MemoryCachedLaunchPadsRepository @Inject constructor(
 
     override val launchPads: StateFlow<Result<List<LaunchPad>>> get() = _launchPads
 
-    override suspend fun getLaunchPads() {
+    override suspend fun refreshLaunchPads() {
         if (_launchPads.value == Result.NotStarted || _launchPads.value is Result.Error) {
             _launchPads.value = Result.Loading
             val result = suspendRunCatching { launchPadsNetwork.getLaunchPads() }

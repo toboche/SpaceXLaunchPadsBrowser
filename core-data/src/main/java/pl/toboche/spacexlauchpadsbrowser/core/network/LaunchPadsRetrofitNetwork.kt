@@ -9,14 +9,13 @@ import okhttp3.logging.HttpLoggingInterceptor
 import pl.toboche.core.data.BuildConfig
 import pl.toboche.spacexlauchpadsbrowser.core.network.model.LaunchPadEntity
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import javax.inject.Inject
 import javax.inject.Singleton
 
 private interface RetrofitLaunchPadsANetworkApi {
     @GET(value = "/v3/launchpads")
-    suspend fun getTopics(): List<LaunchPadEntity>
+    suspend fun getLaunchPads(): List<LaunchPadEntity>
 }
 
 private const val BaseUrl = BuildConfig.BACKEND_URL
@@ -41,7 +40,7 @@ class LaunchPadsRetrofitNetwork @Inject constructor(
         .create(RetrofitLaunchPadsANetworkApi::class.java)
 
     override suspend fun getLaunchPads(): List<LaunchPadEntity> {
-        return networkApi.getTopics()
+        return networkApi.getLaunchPads()
     }
 
 }

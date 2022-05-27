@@ -8,10 +8,11 @@ class LaunchPadsMapper @Inject constructor() {
     fun map(launchPadEntities: List<LaunchPadEntity>) =
         launchPadEntities.map {
             LaunchPad(
-                it.id,
-                it.name,
-                mapStatus(it.status),
-                mapLocation(it.location)
+                id = it.id,
+                name = it.name,
+                status = mapStatus(it.status),
+                location = mapLocation(it.location),
+                fullName = it.fullName
             )
         }
 

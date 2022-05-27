@@ -33,7 +33,7 @@ class SplashScreenViewModel
                 initialValue = SplashScreenUiState.Loading
             ).also {
                 viewModelScope.launch {
-                    launchPadsRepository.getLaunchPads()
+                    launchPadsRepository.refreshLaunchPads()
                 }
             }
 

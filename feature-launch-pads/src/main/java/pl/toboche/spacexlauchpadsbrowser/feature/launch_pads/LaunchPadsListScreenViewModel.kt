@@ -10,7 +10,7 @@ import pl.toboche.spacexlauchpadsbrowser.core.result.Result
 import javax.inject.Inject
 
 @HiltViewModel
-class LaunchPadsScreenViewModel @Inject constructor(
+class LaunchPadsListScreenViewModel @Inject constructor(
     launchPadsRepository: LaunchPadsRepository,
 ) : ViewModel() {
 
@@ -20,8 +20,9 @@ class LaunchPadsScreenViewModel @Inject constructor(
         }
         it.data.map {
             LaunchPadListItem(
-                it.name,
-                mapStatus(it)
+                id = it.id,
+                name = it.name,
+                status = mapStatus(it)
             )
         }
     }

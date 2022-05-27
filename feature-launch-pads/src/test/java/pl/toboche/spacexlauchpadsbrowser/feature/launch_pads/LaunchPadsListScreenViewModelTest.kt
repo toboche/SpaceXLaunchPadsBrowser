@@ -16,7 +16,7 @@ import pl.toboche.spacexlauchpadsbrowser.core.result.Result
 import pl.toboche.spacexlauchpadsbrowser.core.result.Result.Error
 
 @RunWith(Parameterized::class)
-class LaunchPadsScreenViewModelTest(
+class LaunchPadsListScreenViewModelTest(
     status: LaunchPad.Status,
     private val expectedStatus: String
 ) {
@@ -34,7 +34,7 @@ class LaunchPadsScreenViewModelTest(
         }
     }
 
-    private lateinit var systemUnderTest: LaunchPadsScreenViewModel
+    private lateinit var systemUnderTest: LaunchPadsListScreenViewModel
     private val launchPads =
         MutableStateFlow<Result<List<LaunchPad>>>(
             Error()
@@ -53,7 +53,7 @@ class LaunchPadsScreenViewModelTest(
 
     @Before
     fun setUp() {
-        systemUnderTest = LaunchPadsScreenViewModel(
+        systemUnderTest = LaunchPadsListScreenViewModel(
             testLaunchPadsRepository
         )
     }

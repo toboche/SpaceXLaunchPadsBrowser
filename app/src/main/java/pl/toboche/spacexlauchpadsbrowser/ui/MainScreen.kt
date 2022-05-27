@@ -1,9 +1,6 @@
 package pl.toboche.spacexlauchpadsbrowser.ui
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
@@ -15,17 +12,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import pl.toboche.feature.splash.SplashScreen
 import pl.toboche.spacexlauchpadsbrowser.MainScreenViewModel
 import pl.toboche.spacexlauchpadsbrowser.R
-import pl.toboche.spacexlauchpadsbrowser.feature.launch_pads.ui.LaunchPadsListScreen
+import pl.toboche.spacexlauchpadsbrowser.core.navigation.Navigation
 
 @Composable
 fun MainScreen(
+    padding: PaddingValues,
     viewModel: MainScreenViewModel = hiltViewModel(),
 ) {
     val uiState: MainScreenViewModel.MainScreenUiState by viewModel.uiState.collectAsState()
 
+    Box(modifier = Modifier.padding(padding))
     when (uiState) {
         is MainScreenViewModel.MainScreenUiState.Initial -> CircularProgressIndicator()
-        is MainScreenViewModel.MainScreenUiState.Cached -> LaunchPadsListScreen()
+        is MainScreenViewModel.MainScreenUiState.Cached -> Navigation()
         is MainScreenViewModel.MainScreenUiState.Missing -> SplashScreen(R.drawable.ic_launcher_foreground)
         is MainScreenViewModel.MainScreenUiState.Error -> showErrorDialog(
             uiState as MainScreenViewModel.MainScreenUiState.Error,

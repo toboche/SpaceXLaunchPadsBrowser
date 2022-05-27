@@ -4,7 +4,8 @@ data class LaunchPad(
     val id: Long,
     val name: String,
     val status: Status,
-    val location: Location
+    val location: Location,
+    val fullName: String
 ) {
     enum class Status {
         ACTIVE,
