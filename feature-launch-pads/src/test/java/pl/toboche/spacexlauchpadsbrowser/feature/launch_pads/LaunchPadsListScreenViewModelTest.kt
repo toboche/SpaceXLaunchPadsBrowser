@@ -44,11 +44,13 @@ class LaunchPadsListScreenViewModelTest(
     }
 
     val testName = "launch pad name"
+    val testFullName = "full name"
     val testLaunchPad = LaunchPad(
         id = 1,
         name = testName,
         status,
-        location = mock()
+        location = mock(),
+        fullName = testFullName
     )
 
     @Before
@@ -74,9 +76,9 @@ class LaunchPadsListScreenViewModelTest(
 
             val awaitItems = awaitItem()
             assertEquals(1, awaitItems.size)
-            val (name, status) = awaitItems[0]
-            assertEquals(name, testName)
-            assertEquals(status, expectedStatus)
+            val item = awaitItems[0]
+            assertEquals(item.name, testName)
+            assertEquals(item.status, expectedStatus)
             cancel()
         }
     }
