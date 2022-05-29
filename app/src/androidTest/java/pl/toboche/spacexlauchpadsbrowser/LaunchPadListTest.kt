@@ -14,15 +14,18 @@ import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import pl.toboche.core_testing.mockwebserver.MockServerDispatcher
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 @HiltAndroidTest
 class LaunchPadListTest {
 
+    private val mockServerDispatcher = MockServerDispatcher()
+
     private var mockWebServer = MockWebServer().apply {
         start(8080)
-        dispatcher = MockServerDispatcher()
+        dispatcher = mockServerDispatcher
     }
 
     @get:Rule(order = 0)
