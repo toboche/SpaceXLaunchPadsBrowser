@@ -6,7 +6,9 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import pl.toboche.core.data.BuildConfig
+import pl.toboche.spacexlauchpadsbrowser.core.configuration.ApplicationConfiguration
+import pl.toboche.spacexlauchpadsbrowser.core.di.AppDispatchers
+import pl.toboche.spacexlauchpadsbrowser.core.di.Dispatcher
 import pl.toboche.spacexlauchpadsbrowser.core.network.model.LaunchPadEntity
 import retrofit2.Retrofit
 import retrofit2.http.GET
@@ -18,16 +20,16 @@ private interface RetrofitLaunchPadsANetworkApi {
     suspend fun getLaunchPads(): List<LaunchPadEntity>
 }
 
-private const val BaseUrl = BuildConfig.BACKEND_URL
 
 @Singleton
 class LaunchPadsRetrofitNetwork @Inject constructor(
-    private val ioDispatcher: CoroutineDispatcher,
-    private val networkJson: Json
+    @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+    private val networkJson: Json,
+    applicationConfiguration: ApplicationConfiguration
 
 ) : LaunchPadsNetwork {
     private val networkApi = Retrofit.Builder()
-        .baseUrl(BaseUrl)
+        .baseUrl(applicationConfiguration.getBaseUrl())
         .client(
             OkHttpClient.Builder()
                 .addNetworkInterceptor(
